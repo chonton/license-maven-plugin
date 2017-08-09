@@ -18,4 +18,4 @@ import java.nio.file.Files;
   File file = new File(basedir, "build.log" );
   BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
 
-  findLine(reader, "[ERROR] Failed to execute goal org.honton.chas:compliance-maven-plugin:0.0.1-SNAPSHOT:compliance (default) on project no-license-module: no-license-dependent does not have acceptable license -> [Help 1]");
+  findLine(reader, "[ERROR] Failed to execute goal org.honton.chas:license-maven-plugin:0.0.1-SNAPSHOT:compliance (default) on project no-license-module: no-license-dependent does not have acceptable license -> [Help 1]");

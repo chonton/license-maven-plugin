@@ -1,4 +1,4 @@
-package org.honton.chas.compliance.maven.plugin;
+package org.honton.chas.license.maven.plugin;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,15 +18,17 @@ import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.project.ProjectBuildingResult;
 import org.apache.maven.repository.RepositorySystem;
 import org.apache.maven.shared.artifact.resolve.ArtifactResolver;
-import org.honton.chas.compliance.maven.plugin.license.LicenseMatcher;
-import org.honton.chas.compliance.maven.plugin.license.LicenseRegex;
-import org.honton.chas.compliance.maven.plugin.license.LicenseSet;
+import org.honton.chas.license.maven.plugin.compliance.LicenseMatcher;
+import org.honton.chas.license.maven.plugin.compliance.LicenseRegex;
+import org.honton.chas.license.maven.plugin.compliance.LicenseSet;
 
 /**
- * Check dependencies' licenses for compliance.  For each dependency, check if any of the acceptable
- * licenses match the any of the dependency licenses.  A match is successful if either the acceptable
- * license URL regular expression is matched by the dependency license URL, or the acceptable
- * license name regular expression is matched by the dependency license name.
+ * This compliance goal checks all dependencies in the build and active profile sections for
+ * compliance with acceptable licenses.  For each dependency, this goal checks if any of the
+ * dependency licenses matches any of the acceptable licenses.  A match is successful if either the
+ * dependency license URL matches the acceptable license URL regular expression, or the dependency
+ * license name matches the acceptable license name regular expression. The lack of a
+ * license in the dependency will cause this goal to fail.
  */
 @Mojo(name = "compliance", defaultPhase = LifecyclePhase.VALIDATE)
 public class ComplianceMojo extends AbstractMojo {
@@ -54,7 +56,7 @@ public class ComplianceMojo extends AbstractMojo {
 
   /**
    * The licenses that are allowed.  Each license has a name and URL regular expression.
-   * If not set, then licenses from acceptableLicenseResource are used.
+   * If not set, licenses from acceptableLicenseResource are used.
    */
   @Parameter
   private List<LicenseRegex> acceptableLicenses;
@@ -63,7 +65,7 @@ public class ComplianceMojo extends AbstractMojo {
    * The resource containing licenses that are allowed.
    */
   @Parameter(property = "compliance.licenses", defaultValue = "osi")
-  private String acceptableLicenseResource;
+  private String acceptableLicenseResources;
 
   /**
    * The dependencies to exclude from checking compliance.  These will be in the form of
@@ -91,8 +93,8 @@ public class ComplianceMojo extends AbstractMojo {
       scopes = Arrays.asList("compile", "runtime", "provided", "test");
     }
     if( acceptableLicenses == null) {
-      getLog().debug("using licenses from " + acceptableLicenseResource);
-      acceptableLicenses = LicenseSet.loadLicenses(acceptableLicenseResource);
+      getLog().debug("using licenses from " + acceptableLicenseResources);
+      acceptableLicenses = LicenseSet.loadLicenses(acceptableLicenseResources);
     }
     excludeMatcher = new DependencyMatcher(getLog(), excludeDependencies);
     licenseMatcher = new LicenseMatcher(getLog(), acceptableLicenses);

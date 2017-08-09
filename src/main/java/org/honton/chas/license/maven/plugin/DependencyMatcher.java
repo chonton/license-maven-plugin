@@ -1,4 +1,4 @@
-package org.honton.chas.compliance.maven.plugin;
+package org.honton.chas.license.maven.plugin;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,28 +1,26 @@
-# exists-maven-plugin
+# license-maven-plugin
 
-Check if a maven artifact exists. Designed around the use case of skipping deployment if the stable version already exists.
+Check if maven dependencies meet license compliance.  Many organizations require the licenses of
+dependencies meet certain conditions to allow the use of that open source software.  This due
+diligence helps prevent unwanted impairment of organizational intellectual property.
 
-Mojo details at [plugin info](https://chonton.github.io/exists-maven-plugin/0.0.3/plugin-info.html)
+Mojo details at [plugin info](https://chonton.github.io/license-maven-plugin/0.0.1/plugin-info.html)
 
-Two basic goals: [local](https://chonton.github.io/exists-maven-plugin/0.0.3/local-mojo.html) checks
-if the just built artifact is already in the local repository;
-and [remote](https://chonton.github.io/exists-maven-plugin/0.0.3/remote-mojo.html) checks
-if the just built artifact is already in the remote repository.
+There is a single goal: [compliance](https://chonton.github.io/license-maven-plugin/0.0.1/local-mojo.html),
+which defaults to the *validate* phase.  This goal checks all dependencies in the build and active
+profile sections for compliance with acceptable licenses.  For each dependency, the goal checks if
+any of the dependency licenses match any of the acceptable licenses.  A match is successful if
+either the dependency license URL matches the acceptable license URL regular expression, or the
+dependency license name matches the acceptable license name regular expression.  The lack of a
+license in the dependency will cause a goal failure.
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-|project    |${project.groupId}:${project.artifactId}:${project.version}| The project within the repository to query|
-|artifact   |${project.artifactId}-${project.version}.pom|The artifact within the project to query|
-|property   |maven.deploy.skip|The property to receive the result of the query|
-|userProperty|false|If the property should be set as a user property, to be available in child projects|
-|useChecksum|${createChecksum}|Use checksum to compare artifacts (Checksums only available when install plugin is so configured.)|
-|skipIfSnapshot|true|If checksums are not used, skip the query if the project ends with -SNAPSHOT|
-|repository |${project.distributionManagement.repository.url}| For remote goal, the repository to query for artifacts|
-|snapshotRepository |${project.distributionManagement.snapshotRepository.url}| For remote goal, the repository to query for snapshot artifacts|
-|serverId|${project.distributionManagement.repository.id}|For remote goal, the server ID to use for authentication and proxy settings|
-|snapshotServerId|${project.distributionManagement.snapshotRepository.id}|For remote goal, the server ID to use for snapshot authentication and proxy settings|
-|failIfExists|${failIfExists}|Fail the build if the artifact already exists|
-|failIfNotExists|${failIfNotExists}|Fail the build if the artifact does not exist|
+
+| Parameter       | Default           | Description          |
+|-----------------|------------------ |----------------------|
+|skipCompliance   | ${compliance.skip} | Skip the license check |
+|acceptableLicenses |             |The set of license regular expressions to match against dependency licenses. If not set, licenses from acceptableLicenseResource are used. |
+|acceptableLicenseResources | osi |The name of an xml resource from which to read a set of licenses.  Built in resources are 'osi', 'osi-viral', 'osi-non-viral' |
+|excludeDependencies |      |The dependencies to exclude from checking compliance.  These will be in the form of *groupId:artifactId[[:type]:classifier]*. Wildcard characters '*' and '?' can be used to do glob-like pattern matching. |
 
 Typical use:
 
@@ -32,13 +30,44 @@ Typical use:
 
       <plugin>
         <groupId>org.honton.chas</groupId>
-        <artifactId>exists-maven-plugin</artifactId>
-        <version>0.0.3</version>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>0.0.1</version>
         <executions>
           <execution>
             <goals>
-              <goal>remote</goal>
+              <goal>compliance</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+```
+
+Specifying that only Apache license is allowed:
+
+```xml
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.honton.chas</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>0.0.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compliance</goal>
+            </goals>
+            <configuration>
+              <acceptableLicenses>
+                <license>
+                  <name>^(?-iu)(Apache License, Version 2\.0)|(Apache-2\.0)$</name>
+                  <url>^https?://www\.apache\.org/licenses/LICENSE-2\.0$</url>
+                </license>
+              </acceptableLicenses>
+            </configuration>
           </execution>
         </executions>
       </plugin>

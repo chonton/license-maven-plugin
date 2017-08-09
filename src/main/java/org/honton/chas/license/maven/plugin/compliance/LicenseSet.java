@@ -1,4 +1,4 @@
-package org.honton.chas.compliance.maven.plugin.license;
+package org.honton.chas.license.maven.plugin.compliance;
 
 import java.io.IOException;
 import java.io.InputStream;

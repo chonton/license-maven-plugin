@@ -1,7 +1,8 @@
-package org.honton.chas.compliance.maven.plugin.license;
+package org.honton.chas.license.maven.plugin.compliance;
 
 import java.util.regex.Pattern;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.maven.model.License;
 
@@ -10,9 +11,9 @@ import org.apache.maven.model.License;
  */
 public class LicenseRegex {
 
-  @XmlAttribute
+  @XmlElement
   private String name;
-  @XmlAttribute
+  @XmlElement
   private String url;
 
   @XmlTransient

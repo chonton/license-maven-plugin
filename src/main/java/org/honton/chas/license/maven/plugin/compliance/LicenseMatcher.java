@@ -1,9 +1,8 @@
-package org.honton.chas.compliance.maven.plugin.license;
+package org.honton.chas.license.maven.plugin.compliance;
 
 import java.util.List;
 import org.apache.maven.model.License;
 import org.apache.maven.plugin.logging.Log;
-import org.honton.chas.compliance.maven.plugin.license.LicenseRegex;
 
 /**
  * Check dependencies' licenses for compliance
