@@ -15,12 +15,13 @@ dependency license name matches the acceptable license name regular expression. 
 license in the dependency will cause a goal failure.
 
 
-| Parameter       | Default           | Description          |
-|-----------------|------------------ |----------------------|
-|skipCompliance   | ${compliance.skip} | Skip the license check |
-|acceptableLicenses |             |The set of license regular expressions to match against dependency licenses. If not set, licenses from acceptableLicenseResource are used. |
-|acceptableLicenseResources | osi |The name of an xml resource from which to read a set of licenses.  Built in resources are 'osi', 'osi-viral', 'osi-non-viral' |
-|excludeDependencies |      |The dependencies to exclude from checking compliance.  These will be in the form of *groupId:artifactId[[:type]:classifier]*. Wildcard characters '*' and '?' can be used to do glob-like pattern matching. |
+| Parameter       | Property     | Default | Description          |
+|-----------------|------------- | ------- |----------------------|
+|skipCompliance|${compliance.skip}| false | Skip the license check |
+|acceptableLicenses|            |     |The set of license regular expressions to match against dependency licenses. If not set, licenses from acceptableLicenseResource are used. |
+|acceptableLicenseResources|${compliance.licenses}|osi |The comma separated names of xml resources from which to read licenses.  Built in resources are 'osi', 'osi-viral', 'osi-non-viral' |
+|excludes |      |The list of dependencies to exclude from checking compliance.  These will be in the form of *groupId:artifactId[[:type]:classifier]*. Wildcard characters '*' and '?' can be used to do glob-like pattern matching. |
+|scopes   |${compliance.scopes}|compile, runtime, provided, test|The comma separated list of scopes to check |
 
 Typical use:
 

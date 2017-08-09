@@ -2,6 +2,7 @@ package org.honton.chas.license.maven.plugin;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
@@ -73,30 +74,33 @@ public class ComplianceMojo extends AbstractMojo {
    * used to do glob-like pattern matching.
    */
   @Parameter
-  private List<String> excludeDependencies;
+  private List<String> excludes;
 
   /**
-   * The dependency scopes to check.  The default dependency scopes are compile, runtime, provided, test.
+   * The dependency scopes to check.
    */
-  @Parameter
-  private List<String> scopes;
+  @Parameter(property = "compliance.scopes", defaultValue = "compile, runtime, provided, test")
+  private String scopes;
 
   private DependencyMatcher excludeMatcher;
   private LicenseMatcher licenseMatcher;
+  private ScopeMatcher scopeMatcher;
+
+  private static final Pattern COMMA_SEPARATED_LIST = Pattern.compile("\\s*,\\s*");
 
   public void execute() throws MojoExecutionException, MojoFailureException {
     if (skipCompliance) {
       getLog().info("skipping license compliance");
       return;
     }
-    if (scopes == null) {
-      scopes = Arrays.asList("compile", "runtime", "provided", "test");
-    }
+
+    scopeMatcher = new ScopeMatcher(getLog(), scopes != null ?scopes :"compile, runtime, provided, test");
+
     if( acceptableLicenses == null) {
       getLog().debug("using licenses from " + acceptableLicenseResources);
       acceptableLicenses = LicenseSet.loadLicenses(acceptableLicenseResources);
     }
-    excludeMatcher = new DependencyMatcher(getLog(), excludeDependencies);
+    excludeMatcher = new DependencyMatcher(getLog(), excludes);
     licenseMatcher = new LicenseMatcher(getLog(), acceptableLicenses);
 
     for (Dependency dependency : project.getDependencies()) {
@@ -105,7 +109,7 @@ public class ComplianceMojo extends AbstractMojo {
   }
 
   private void checkDependency(Dependency dependency) throws MojoExecutionException, MojoFailureException {
-    if(!scopes.contains(dependency.getScope())) {
+    if(!scopeMatcher.isMatch(dependency.getScope())) {
       getLog().debug(dependency.getArtifactId() + " is not scoped");
       return;
     }
