@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.honton.chas</groupId>
-  <artifactId>compliance-it-parent</artifactId>
+  <artifactId>license-it-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -13,6 +13,7 @@
     <module>direct-license-it</module>
     <module>inherit-license-it</module>
     <module>no-license-it</module>
+    <module>configured-license-it</module>
     <module>use-gpl-it</module>
   </modules>
 
@@ -36,7 +37,7 @@
 
       <plugin>
         <groupId>org.honton.chas</groupId>
-        <artifactId>compliance-maven-plugin</artifactId>
+        <artifactId>license-maven-plugin</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <executions>
           <execution>

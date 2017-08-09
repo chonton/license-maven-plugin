@@ -1,13 +1,14 @@
-package org.honton.chas.compliance.maven.plugin;
+package org.honton.chas.license.maven.plugin;
 
-import java.util.Arrays;
-import java.util.Collections;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -96,5 +97,13 @@ public class DependencyMatcherTest {
     DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Collections.singletonList("groupId:artifactId"));
     Dependency dependency = createDependency("g", "a");
     Assert.assertFalse(dependencyMatcher.isMatch(dependency));
+  }
+
+  @Test
+  public void testWildPrefix() throws MojoExecutionException {
+    Log log = Mockito.mock(Log.class);
+    DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Collections.singletonList("com\\.example\\.*:*"));
+    Dependency dependency = createDependency("com.example.group", "artifact-lib");
+    Assert.assertTrue(dependencyMatcher.isMatch(dependency));
   }
 }

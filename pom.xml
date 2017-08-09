@@ -3,14 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.honton.chas</groupId>
-  <artifactId>compliance-maven-plugin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <artifactId>license-maven-plugin</artifactId>
+  <version>0.0.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>License Compliance Maven Plugin</name>
 
   <description>Check dependencies licenses for compliance</description>
-  <url>https://github.com/chonton/compliance-maven-plugin</url>
+  <url>https://github.com/chonton/license-maven-plugin</url>
   <inceptionYear>2017</inceptionYear>
 
   <licenses>
@@ -30,9 +30,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/chonton/compliance-maven-plugin</connection>
-    <developerConnection>scm:git:git@github.com:chonton/compliance-maven-plugin</developerConnection>
-    <url>https://github.com/chonton/compliance-maven-plugin</url>
+    <connection>scm:git:git://github.com/chonton/license-maven-plugin</connection>
+    <developerConnection>scm:git:git@github.com:chonton/license-maven-plugin</developerConnection>
+    <url>https://github.com/chonton/license-maven-plugin</url>
   </scm>
 
   <distributionManagement>
@@ -49,31 +49,60 @@
 
     <site>
       <id>github</id>
-      <url>https://chonton.github.com/compliance-maven-plugin/${project.version}</url>
+      <url>https://chonton.github.com/license-maven-plugin/${project.version}</url>
     </site>
 
   </distributionManagement>
 
   <properties>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
 
     <!-- use org.sonatype.plugins:nexus-staging-maven-plugin instead of org.apache.maven.plugins:maven-deploy-plugin -->
     <maven.deploy.skip>true</maven.deploy.skip>
     <!-- use com.github.github:site-maven-plugin instead of org.apache.maven.plugins:maven-site-plugin -->
     <maven.site.deploy.skip>true</maven.site.deploy.skip>
 
-    <maven.version>3.3.9</maven.version>
+    <maven.version>3.6.3</maven.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
 
     <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-core</artifactId>
+      <version>2.3.0.1</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.3.1</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>2.3.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.1</version>
     </dependency>
+
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
@@ -101,7 +130,7 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.4</version>
+      <version>3.6.0</version>
       <scope>provided</scope>
     </dependency>
 
@@ -114,7 +143,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.8.47</version>
+      <version>3.6.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -124,20 +153,18 @@
     <plugins>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
         <version>2.4</version>
       </plugin>
 
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
-        <version>2.0.0</version>
+        <version>3.2.1</version>
         <configuration>
           <postBuildHookScript>verify</postBuildHookScript>
           <addTestClassPath>true</addTestClassPath>
@@ -157,29 +184,37 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.4</version>
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.4</version>
+        <version>3.6.0</version>
         <configuration>
-          <goalPrefix>compliance</goalPrefix>
-          <extractors>
-            <extractor>java-annotations</extractor>
-          </extractors>
+          <goalPrefix>license</goalPrefix>
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
         </configuration>
         <executions>
           <execution>
-            <id>default-descriptor</id>
-            <phase>process-classes</phase>
+            <id>mojo-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>help-goal</id>
+            <goals>
+              <goal>helpmojo</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
 
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.9.1</version>
+      </plugin>
     </plugins>
   </build>
 
@@ -187,24 +222,24 @@
     <plugins>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.4</version>
+        <version>3.6.0</version>
       </plugin>
+
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.8</version>
+        <version>3.1.1</version>
         <reportSets>
           <reportSet>
             <reports>
               <report>index</report>
-              <report>project-team</report>
-              <report>license</report>
+              <report>team</report>
+              <report>licenses</report>
               <report>dependency-info</report>
               <report>dependency-management</report>
               <report>distribution-management</report>
               <report>plugin-management</report>
-              <report>cim</report>
+              <report>ci-management</report>
               <report>scm</report>
               <report>summary</report>
             </reports>
@@ -227,13 +262,13 @@
           <plugin>
             <groupId>com.github.github</groupId>
             <artifactId>site-maven-plugin</artifactId>
-            <version>0.11</version>
+            <version>0.12</version>
             <configuration>
               <message>Site documentation</message>
               <path>${project.version}</path>
-              <merge>false</merge>
+              <merge>true</merge>
               <server>github</server>
-              <repositoryName>compliance-maven-plugin</repositoryName>
+              <repositoryName>license-maven-plugin</repositoryName>
               <repositoryOwner>chonton</repositoryOwner>
             </configuration>
             <executions>
@@ -249,7 +284,7 @@
       </build>
     </profile>
 
-    <!-- release to github
+    <!-- release to maven central
     mvn clean deploy -P release
     -->
     <profile>
@@ -258,9 +293,8 @@
         <plugins>
 
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -273,9 +307,8 @@
           </plugin>
 
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.9.1</version>
+            <version>3.2.0</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -287,9 +320,8 @@
           </plugin>
 
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>2.2.1</version>
+            <version>3.2.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -303,7 +335,7 @@
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.8</version>
             <extensions>true</extensions>
             <configuration>
               <serverId>ossrh</serverId>

@@ -6,7 +6,7 @@
 
   <parent>
     <groupId>org.honton.chas</groupId>
-    <artifactId>compliance-it-parent</artifactId>
+    <artifactId>license-it-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
