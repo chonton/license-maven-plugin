@@ -65,7 +65,7 @@ public class ComplianceMojo extends AbstractMojo {
   /**
    * The resource containing licenses that are allowed.
    */
-  @Parameter(property = "compliance.licenses", defaultValue = "osi")
+  @Parameter(property = "compliance.licenses", defaultValue = "osi-widely-used")
   private String acceptableLicenseResources;
 
   /**

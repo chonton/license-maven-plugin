@@ -1,0 +1,50 @@
+<licenses>
+  <license>
+    <name>^(?-iu)(Apache License, Version 2\.0)|(Apache-2\.0)$</name>
+    <url>^https?://www\.apache\.org/licenses/LICENSE-2\.0$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(The 3-Clause BSD License)|(New BSD License)|(Modified BSD License)|(BSD-3-Clause)$</name>
+    <url>^https://opensource\.org/licenses/BSD-3-Clause$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(2-Clause BSD License)|(Simplified BSD License)|(FreeBSD License)|(BSD-2-Clause)$</name>
+    <url>^https?://opensource\.org/licenses/BSD-2-Clause$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(GNU General Public License, version 2)|(GPL-2\.0)$</name>
+    <url>^https?://www\.gnu\.org/old-licenses/gpl-2\.0(\.[a-z]{2})?\.html$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(GNU General Public License, version 3)|(GPL-3\.0)$</name>
+    <url>^https?://www\.gnu\.org/licenses/gpl-3\.0(\.[a-z]{2})?\.html$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(GNU Library General Public License, version 2)|(LGPL-2\.0)$</name>
+    <url>^https?://www\.gnu\.org/old-licenses/lgpl-2\.0(\.[a-z]{2})?\.html$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(GNU Lesser General Public License, version 2\.1)|(LGPL-2\.1)$</name>
+    <url>^https?://www\.gnu\.org/old-licenses/lgpl-2\.1(\.[a-z]{2})?\.html$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(GNU Lesser General Public License, version 3)|(LGPL-3\.0)$</name>
+    <url>^https?://www\.gnu\.org/licenses/lgpl-3\.0(\.[a-z]{2})?\.html$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(The MIT License)|(MIT)$</name>
+    <url>^https?://opensource\.org/licenses/MIT$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(Mozilla Public License 2\.0)|(MPL-2\.0)$</name>
+    <url>^https?://www.mozilla.org/([a-z]+-[A-Z]+/)?MPL/?$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(Common Development and Distribution License 1\.0)|(CDDL-1\.0)$</name>
+    <url>^https?://opensource\.org/licenses/CDDL-1\.0$</url>
+  </license>
+  <license>
+    <name>^(?-iu)(Eclipse Public License 1\.0)|(EPL-1\.0)$</name>
+    <url>^https?://www\.eclipse\.org/legal/epl-v10\.html$</url>
+  </license>
+</licenses>
