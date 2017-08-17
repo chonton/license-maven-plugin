@@ -1,13 +1,13 @@
 package org.honton.chas.license.maven.plugin;
 
+import org.apache.maven.model.Dependency;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.logging.Log;
 
 
 /**
@@ -82,6 +82,10 @@ public class DependencyMatcher {
       for (int i = 0; i < src.length(); ++i) {
         char c = src.charAt(i);
         switch (c) {
+          case '\\':
+            dst.append(c);
+            dst.append(src.charAt(++i));
+            break;
           case '.':
             dst.append("\\.");
             break;

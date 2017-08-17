@@ -1,11 +1,9 @@
 package org.honton.chas.license.maven.plugin;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.License;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -22,6 +20,9 @@ import org.apache.maven.shared.artifact.resolve.ArtifactResolver;
 import org.honton.chas.license.maven.plugin.compliance.LicenseMatcher;
 import org.honton.chas.license.maven.plugin.compliance.LicenseRegex;
 import org.honton.chas.license.maven.plugin.compliance.LicenseSet;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * This compliance goal checks all dependencies in the build and active profile sections for
@@ -110,17 +111,45 @@ public class ComplianceMojo extends AbstractMojo {
 
   private void checkDependency(Dependency dependency) throws MojoExecutionException, MojoFailureException {
     if(!scopeMatcher.isMatch(dependency.getScope())) {
-      getLog().debug(dependency.getArtifactId() + " is not scoped");
+      getLog().debug(createMessage(dependency, " is not scoped"));
       return;
     }
     if (excludeMatcher.isMatch(dependency)) {
-      getLog().debug(dependency.getArtifactId() + " is excluded");
+      getLog().debug(createMessage(dependency, " is excluded"));
       return;
     }
     MavenProject mavenProject = getMavenProject(dependency);
     if (!licenseMatcher.hasAcceptableLicense(mavenProject.getLicenses())) {
-      throw new MojoExecutionException(dependency.getArtifactId() + " does not have acceptable license");
+      StringBuilder sb = createMessage(new StringBuilder(300), dependency);
+      expandLicenses(mavenProject, sb);
+      throw new MojoExecutionException(sb.toString());
     }
+  }
+
+  private void expandLicenses(MavenProject mavenProject, StringBuilder sb) {
+    sb.append(" does not have acceptable license [");
+    boolean priorLicense = false;
+    for (License license : mavenProject.getLicenses()) {
+      if (priorLicense) {
+        sb.append("},{");
+      } else {
+        sb.append('{');
+        priorLicense = true;
+      }
+      if (license.getName() != null) {
+        sb.append("name:").append(license.getName());
+      }
+      if (license.getUrl() != null) {
+        if (license.getName() != null) {
+          sb.append(',');
+        }
+        sb.append("url:").append(license.getUrl());
+      }
+    }
+    if(priorLicense) {
+      sb.append('}');
+    }
+    sb.append(']');
   }
 
   private MavenProject getMavenProject(Dependency d) throws MojoFailureException {
@@ -129,7 +158,27 @@ public class ComplianceMojo extends AbstractMojo {
       ProjectBuildingResult build = mavenProjectBuilder.build(pomArtifact, session.getProjectBuildingRequest());
       return build.getProject();
     } catch (ProjectBuildingException e) {
-      throw new MojoFailureException("Could not build effective pom for " + d.getArtifactId(), e);
+      throw new MojoFailureException(createMessage("Could not build effective pom for ", d), e);
     }
+  }
+
+  // groupId:artifactId:packaging:classifier:version
+  private static StringBuilder createMessage(StringBuilder sb, Dependency d) {
+    sb.append(d.getGroupId())
+        .append(':').append(d.getArtifactId())
+        .append(':').append(d.getType()!=null ? d.getType() : "jar");
+    if(d.getClassifier()!=null) {
+      sb.append(':').append(d.getClassifier());
+    }
+    sb.append(':').append(d.getVersion());
+    return sb;
+  }
+
+  private static String createMessage(Dependency d, String suffix) {
+    return createMessage(new StringBuilder(100), d).append(suffix).toString();
+  }
+
+  private static String createMessage(String prefix, Dependency d) {
+    return createMessage(new StringBuilder(100).append(prefix), d).toString();
   }
 }

@@ -1,50 +1,70 @@
 <licenses>
   <license>
-    <name>^(?-iu)(Apache License, Version 2\.0)|(Apache-2\.0)$</name>
-    <url>^https?://www\.apache\.org/licenses/LICENSE-2\.0$</url>
+    <name>^(?-iu)\s*((The\s+)?Apache\s+(Software\s+)?License\s*(,\s*Version\s+2\.0)?)|(Apache-2\.0)\s*$</name>
+    <url>^https?://www\.apache\.org/licenses/LICENSE-2\.0.*$</url>
   </license>
   <license>
-    <name>^(?-iu)(The 3-Clause BSD License)|(New BSD License)|(Modified BSD License)|(BSD-3-Clause)$</name>
+    <name>^(?-iu)\s*(The\s+3-Clause\s+BSD\s+License)|(New\s+BSD\s+License)|(Modified\s+BSD\s+License)|(BSD-3-Clause)\s*$</name>
     <url>^https://opensource\.org/licenses/BSD-3-Clause$</url>
   </license>
   <license>
-    <name>^(?-iu)(2-Clause BSD License)|(Simplified BSD License)|(FreeBSD License)|(BSD-2-Clause)$</name>
+    <name>^(?-iu)\s*(2-Clause\s+BSD\s+License)|(Simplified\s+BSD\s+License)|(FreeBSD\s+License)|(BSD-2-Clause)\s*$</name>
     <url>^https?://opensource\.org/licenses/BSD-2-Clause$</url>
   </license>
   <license>
-    <name>^(?-iu)(GNU General Public License, version 2)|(GPL-2\.0)$</name>
+    <name>^(?-iu)\s*(GNU\s+General\s+Public\s+License\s*,\s*version\s+2)|(GPL-2\.0)\s*$</name>
     <url>^https?://www\.gnu\.org/old-licenses/gpl-2\.0(\.[a-z]{2})?\.html$</url>
   </license>
   <license>
-    <name>^(?-iu)(GNU General Public License, version 3)|(GPL-3\.0)$</name>
+    <name>^(?-iu)\s*(GNU\s+General\s+Public\s+License\s*(,\s*version\s+3)?)|(GPL-3\.0)\s*$</name>
     <url>^https?://www\.gnu\.org/licenses/gpl-3\.0(\.[a-z]{2})?\.html$</url>
   </license>
   <license>
-    <name>^(?-iu)(GNU Library General Public License, version 2)|(LGPL-2\.0)$</name>
+    <name>^(?-iu)\s*(GNU\s+Library\s+General\s+Public\s+License\s*,\s*version\s+2)|(LGPL-2\.0)\s*$</name>
     <url>^https?://www\.gnu\.org/old-licenses/lgpl-2\.0(\.[a-z]{2})?\.html$</url>
   </license>
   <license>
-    <name>^(?-iu)(GNU Lesser General Public License, version 2\.1)|(LGPL-2\.1)$</name>
+    <name>^(?-iu)\s*(GNU\s+Lesser\s+General\s+Public\s+License\s*,\s*version\s+2\.1)|(LGPL-2\.1)\s*$</name>
     <url>^https?://www\.gnu\.org/old-licenses/lgpl-2\.1(\.[a-z]{2})?\.html$</url>
   </license>
   <license>
-    <name>^(?-iu)(GNU Lesser General Public License, version 3)|(LGPL-3\.0)$</name>
+    <name>^(?-iu)\s*(GNU\s+Lesser\s+(General\s+)?Public\s+License\s*(,\s*version\s+3)?)|(LGPL-3\.0)\s*$</name>
     <url>^https?://www\.gnu\.org/licenses/lgpl-3\.0(\.[a-z]{2})?\.html$</url>
   </license>
   <license>
-    <name>^(?-iu)(The MIT License)|(MIT)$</name>
+    <name>^(?-iu)\s*((The\s+)?MIT\s+License)|(MIT)\s*$</name>
     <url>^https?://opensource\.org/licenses/MIT$</url>
   </license>
   <license>
-    <name>^(?-iu)(Mozilla Public License 2\.0)|(MPL-2\.0)$</name>
+    <name>^(?-iu)\s*(Mozilla\s+Public\s+License\s+2\.0)|(MPL-2\.0)\s*$</name>
     <url>^https?://www.mozilla.org/([a-z]+-[A-Z]+/)?MPL/?$</url>
   </license>
   <license>
-    <name>^(?-iu)(Common Development and Distribution License 1\.0)|(CDDL-1\.0)$</name>
+    <name>^(?-iu)\s*(Common\s+Development\s+and\s+Distribution\s+License\s+1\.0)|(CDDL-1\.0)\s*$</name>
     <url>^https?://opensource\.org/licenses/CDDL-1\.0$</url>
   </license>
   <license>
-    <name>^(?-iu)(Eclipse Public License 1\.0)|(EPL-1\.0)$</name>
+    <name>^(?-iu)\s*(Eclipse\s+Public\s+License\s+1\.0)|(EPL-1\.0)\s*$</name>
     <url>^https?://www\.eclipse\.org/legal/epl-v10\.html$</url>
+  </license>
+
+  <!-- legacy to eclipse -->
+  <license>
+    <name>^(?-iu)\s*(Common\s+Public\s+License\s+Version\s+1\.0)|(CPL-1\.0)\s*$</name>
+    <url>^https?://www.opensource\.org/licenses/cpl1\.0.*$</url>
+  </license>
+
+  <!-- Oracle Dual licenses -->
+  <license>
+    <name>^(?-iu)\s*(CDDL\s+\+\s+GPLv2\s+with\s+classpath\s+exception)\s*$</name>
+    <url>^https?://glassfish\.dev\.java\.net/nonav/public/CDDL\+GPL\.html$</url>
+  </license>
+  <license>
+    <name>^(?-iu)\s*(GPL2\s+w/\s+CPE)\s*$</name>
+    <url>^https?://glassfish\.java\.net/public/CDDL\+GPL_1_1.html$</url>
+  </license>
+  <license>
+    <name>^(?-iu)\s*(CDDL\s+1\.1)\s*$</name>
+    <url>^https?://glassfish\.java\.net/public/CDDL\+GPL_1_1\.html$</url>
   </license>
 </licenses>
