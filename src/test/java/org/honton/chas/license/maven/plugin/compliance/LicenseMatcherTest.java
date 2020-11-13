@@ -20,10 +20,10 @@ public class LicenseMatcherTest {
     Assert.assertFalse(licenseMatcher.hasAcceptableLicense(Collections.<License>emptyList()));
   }
 
-  private static final String APACHE_NAME = "^(?-iu)(Apache License, Version 2\\.0)|(Apache-2\\.0)$";
+  private static final String APACHE_NAME = "^(Apache License, Version 2\\.0)|(Apache-2\\.0)$";
   private static final String APACHE_URL =  "^https?://www\\.apache\\.org/licenses/LICENSE-2\\.0$";
 
-  private static final String LGPL_NAME = "^(?-iu)(GNU Lesser General Public License, version 3)|(LGPL-3\\.0)$";
+  private static final String LGPL_NAME = "^(GNU Lesser General Public License, version 3)|(LGPL-3\\.0)$";
   private static final String LGPL_URL =  "^https?://www\\.gnu\\.org/licenses/lgpl-3\\.0(\\.[a-z]{2})?\\.html$";
 
   @Test

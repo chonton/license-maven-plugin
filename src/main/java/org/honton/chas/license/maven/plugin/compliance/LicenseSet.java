@@ -21,7 +21,7 @@ public class LicenseSet {
   @XmlElement(name = "license")
   private List<LicenseRegex> licenses;
 
-  static public LicenseSet loadLicenseSet(String resource) throws JAXBException, IOException {
+   public static LicenseSet loadLicenseSet(String resource) throws JAXBException, IOException {
     try (InputStream is = LicenseSet.class.getClassLoader().getResourceAsStream(resource + ".xml")) {
       JAXBContext jaxbContext = JAXBContext.newInstance(LicenseSet.class);
       Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -31,7 +31,7 @@ public class LicenseSet {
 
   private static final Pattern COMMA_SEPARATED_LIST = Pattern.compile("\\s*,\\s*");
 
-  static public List<LicenseRegex> loadLicenses(String resources) throws MojoExecutionException {
+   public static List<LicenseRegex> loadLicenses(String resources) throws MojoExecutionException {
     List<LicenseRegex> licenses = new ArrayList<>();
     for(String resource : COMMA_SEPARATED_LIST.split(resources)) {
       try {

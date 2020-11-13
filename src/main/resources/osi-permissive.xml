@@ -12,14 +12,6 @@
     <url>https?://opensource\.org/licenses/BSD-2-Clause</url>
   </license>
   <license>
-    <name>(GNU\s+General\s+Public\s+License\s*,\s*version\s+2)|(GPL-2\.0)</name>
-    <url>https?://www\.gnu\.org/old-licenses/gpl-2\.0(\.[a-z]{2})?\.html</url>
-  </license>
-  <license>
-    <name>(GNU\s+General\s+Public\s+License\s*(,\s*version\s+3)?)|(GPL-3\.0)</name>
-    <url>https?://www\.gnu\.org/licenses/gpl-3\.0(\.[a-z]{2})?\.html</url>
-  </license>
-  <license>
     <name>(GNU\s+Library\s+General\s+Public\s+License\s*,\s*version\s+2)|(LGPL-2\.0)</name>
     <url>https?://www\.gnu\.org/old-licenses/lgpl-2\.0(\.[a-z]{2})?\.html</url>
   </license>

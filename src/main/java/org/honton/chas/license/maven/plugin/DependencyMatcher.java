@@ -70,7 +70,7 @@ public class DependencyMatcher {
     return Pattern.compile(sb.append('$').toString());
   }
 
-  static private void globToRegex(StringBuilder dst, String src) {
+  private static void globToRegex(StringBuilder dst, String src) {
     if (dst.length() == 0) {
       dst.append('^');
     } else {

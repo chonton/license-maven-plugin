@@ -39,6 +39,7 @@ public class LicenseMatcher {
       if(acceptableLicense.matches(license)) {
         return true;
       }
+      logger.debug(acceptableLicense.getName() + '/' + acceptableLicense.getUrl() + " does not match");
     }
     return false;
   }
