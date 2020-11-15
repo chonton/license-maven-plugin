@@ -1,14 +1,14 @@
 <licenses>
   <license>
-    <name>((The\s+)?Apache\s+(Software\s+)?License\s*(,\s*Version\s+2\.0)?)|(Apache-2\.0)|(Apache\s+License\s+2\.0)</name>
-    <url>(https?://www\.apache\.org/licenses/LICENSE-2\.0(\.txt)?)|(https?://opensource\.org/licenses/Apache-2\.0)|(https?://spdx\.org/licenses/Apache-2\.0\.html)|(https?://repository\.jboss\.org/licenses/apache-2\.0\.txt)</url>
+    <name>((The\s+)?Apache\s+(Software\s+)?License\s*(,\s*Version\s+)?2\.0)|(Apache-2\.0)</name>
+    <url>(https?://www\.apache\.org/licenses/LICENSE-2\.0(\.txt)?)|(https?://opensource\.org/licenses/Apache-2\.0)</url>
   </license>
   <license>
-    <name>(The\s+3-Clause\s+BSD\s+License)|(New\s+BSD\s+License)|(Modified\s+BSD\s+License)|(BSD-3-Clause)</name>
+    <name>((The\s+)?3-Clause\s+BSD\s+License)|(New\s+BSD\s+License)|(Modified\s+BSD\s+License)|(BSD-3-Clause)</name>
     <url>https://opensource\.org/licenses/BSD-3-Clause</url>
   </license>
   <license>
-    <name>(2-Clause\s+BSD\s+License)|(Simplified\s+BSD\s+License)|(FreeBSD\s+License)|(BSD-2-Clause)</name>
+    <name>((The\s+)?2-Clause\s+BSD\s+License)|(Simplified\s+BSD\s+License)|(FreeBSD\s+License)|(BSD-2-Clause)</name>
     <url>https?://opensource\.org/licenses/BSD-2-Clause</url>
   </license>
   <license>
@@ -42,25 +42,5 @@
   <license>
     <name>(Eclipse\s+Public\s+License\s+v?2\.0)|(EPL-2\.0)</name>
     <url>https?://www\.eclipse\.org/legal/epl-v20\.html</url>
-  </license>
-
-  <!-- legacy to eclipse -->
-  <license>
-    <name>(Common\s+Public\s+License\s+Version\s+1\.0)|(CPL-1\.0)</name>
-    <url>https?://www\.opensource\.org/licenses/cpl1\.0\.*</url>
-  </license>
-
-  <!-- Oracle Dual licenses -->
-  <license>
-    <name>(CDDL\s+\+\s+GPLv2\s+with\s+classpath\s+exception)</name>
-    <url>https?://glassfish\.dev\.java\.net/nonav/public/CDDL\+GPL\.html</url>
-  </license>
-  <license>
-    <name>(GPL2\s+w/\s+CPE)</name>
-    <url>https?://glassfish\.java\.net/public/CDDL\+GPL_1_1\.html</url>
-  </license>
-  <license>
-    <name>(CDDL\s+1\.1)</name>
-    <url>https?://glassfish\.java\.net/public/CDDL\+GPL_1_1\.html</url>
   </license>
 </licenses>

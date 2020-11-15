@@ -1,5 +1,6 @@
 package org.honton.chas.license.maven.plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
@@ -29,11 +30,7 @@ import org.honton.chas.license.maven.plugin.compliance.LicenseSet;
  * license name matches the acceptable license name regular expression. The lack of a license in the
  * dependency will cause this goal to fail.
  */
-@Mojo(
-    name = "compliance",
-    defaultPhase = LifecyclePhase.VALIDATE,
-    threadSafe = true,
-    requiresProject = true)
+@Mojo(name = "compliance", defaultPhase = LifecyclePhase.VALIDATE, threadSafe = true)
 public class ComplianceMojo extends AbstractMojo {
 
   @Parameter(defaultValue = "${project}", readonly = true)
@@ -59,7 +56,7 @@ public class ComplianceMojo extends AbstractMojo {
   @Parameter private List<LicenseRegex> acceptableLicenses;
 
   /** The resource containing licenses that are allowed. */
-  @Parameter(property = "compliance.licenses", defaultValue = "osi-permissive")
+  @Parameter(property = "compliance.licenses")
   private String acceptableLicenseResources;
 
   /**
@@ -86,9 +83,15 @@ public class ComplianceMojo extends AbstractMojo {
     scopeMatcher = new ScopeMatcher(scopes != null ? scopes : "compile, runtime, provided, test");
 
     if (acceptableLicenses == null) {
-      getLog().debug("using licenses from " + acceptableLicenseResources);
-      acceptableLicenses = LicenseSet.loadLicenses(acceptableLicenseResources);
+      acceptableLicenses = new ArrayList<>();
+      if (acceptableLicenseResources == null) {
+        acceptableLicenseResources = "osi-permissive";
+      }
     }
+    if (acceptableLicenseResources != null) {
+      LicenseSet.loadLicenses(acceptableLicenses, acceptableLicenseResources);
+    }
+
     excludeMatcher = new DependencyMatcher(getLog(), excludes);
     licenseMatcher = new LicenseMatcher(getLog(), acceptableLicenses);
 
@@ -107,9 +110,6 @@ public class ComplianceMojo extends AbstractMojo {
       return;
     }
     MavenProject mavenProject = getMavenProject(dependency);
-    if (mavenProject == null) {
-      return;
-    }
     List<License> licenses = mavenProject.getLicenses();
     if (!licenseMatcher.hasAcceptableLicense(licenses)) {
       StringBuilder sb = createMessage(new StringBuilder(300), dependency);
@@ -144,14 +144,13 @@ public class ComplianceMojo extends AbstractMojo {
     sb.append(']');
   }
 
-  private MavenProject getMavenProject(Dependency d) {
+  private MavenProject getMavenProject(Dependency d) throws MojoExecutionException {
+    Artifact artifact =
+        repository.createProjectArtifact(d.getGroupId(), d.getArtifactId(), d.getVersion());
     try {
-      Artifact artifact =
-          repository.createProjectArtifact(d.getGroupId(), d.getArtifactId(), d.getVersion());
       return projectBuilder.build(artifact, session.getProjectBuildingRequest()).getProject();
     } catch (ProjectBuildingException e) {
-      getLog().warn(createMessage("Could not build effective pom for ", d));
-      return null;
+      throw new MojoExecutionException(e.getMessage(), e);
     }
   }
 
