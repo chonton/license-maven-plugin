@@ -160,8 +160,6 @@
         <version>3.2.1</version>
         <configuration>
           <postBuildHookScript>verify</postBuildHookScript>
-          <addTestClassPath>true</addTestClassPath>
-          <settingsFile>src/it/settings.xml</settingsFile>
           <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
         </configuration>
         <executions>
