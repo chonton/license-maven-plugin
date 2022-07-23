@@ -4,13 +4,13 @@
 
   <groupId>org.honton.chas</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>0.0.2</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>License Compliance Maven Plugin</name>
-
   <description>Check dependencies licenses for compliance</description>
-  <url>https://github.com/chonton/license-maven-plugin</url>
+
+  <url>https://github.com/chonton/${project.artifactId}</url>
   <inceptionYear>2017</inceptionYear>
 
   <licenses>
@@ -29,10 +29,14 @@
     </developer>
   </developers>
 
+  <prerequisites>
+    <maven>${maven.version}</maven>
+  </prerequisites>
+
   <scm>
-    <connection>scm:git:git://github.com/chonton/license-maven-plugin</connection>
-    <developerConnection>scm:git:git@github.com:chonton/license-maven-plugin</developerConnection>
-    <url>https://github.com/chonton/license-maven-plugin</url>
+    <connection>scm:git:git://github.com/chonton/${project.artifactId}</connection>
+    <developerConnection>scm:git:git@github.com:chonton/${project.artifactId}</developerConnection>
+    <url>https://github.com/chonton/${project.artifactId}</url>
   </scm>
 
   <distributionManagement>
@@ -49,7 +53,7 @@
 
     <site>
       <id>github</id>
-      <url>https://chonton.github.com/license-maven-plugin/${project.version}</url>
+      <url>https://chonton.github.com/${project.artifactId}/${project.version}</url>
     </site>
 
   </distributionManagement>
@@ -63,10 +67,28 @@
     <maven.deploy.skip>true</maven.deploy.skip>
     <!-- use com.github.github:site-maven-plugin instead of org.apache.maven.plugins:maven-site-plugin -->
     <maven.site.deploy.skip>true</maven.site.deploy.skip>
+    <maven.version>3.5.4</maven.version>
 
-    <maven.version>3.6.3</maven.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-annotations</artifactId>
+        <version>2.1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>3.4.1</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
 
@@ -94,37 +116,47 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.1</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
       <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
       <version>${maven.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-sec-dispatcher</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
       <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.6.0</version>
-      <scope>provided</scope>
+      <version>3.6.4</version>
     </dependency>
 
     <dependency>
@@ -143,16 +175,153 @@
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <groupId>com.github.github</groupId>
+          <artifactId>site-maven-plugin</artifactId>
+          <version>0.12</version>
+          <configuration>
+            <message>Site documentation</message>
+            <path>${project.version}</path>
+            <repositoryName>${project.version}</repositoryName>
+            <repositoryOwner>chonton</repositoryOwner>
+            <server>github</server>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.0.0-M1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>3.0.1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.0.0-M1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.3.1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>3.6.2</version>
+          <configuration>
+            <extractors>
+              <extractor>java-annotations</extractor>
+            </extractors>
+            <goalPrefix>license</goalPrefix>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.2.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.9.1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M5</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+
+      </plugins>
+
+    </pluginManagement>
+
     <plugins>
 
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <failOnWarning>true</failOnWarning>
+          <ignoreNonCompile>true</ignoreNonCompile>
+        </configuration>
+        <executions>
+          <execution>
+            <id>check-dependencies</id>
+            <goals>
+              <goal>analyze-only</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
-        <artifactId>maven-install-plugin</artifactId>
-        <version>2.4</version>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>[${maven.compiler.release},)</version>
+                </requireJavaVersion>
+                <requireMavenVersion>
+                  <version>[${maven.version},)</version>
+                </requireMavenVersion>
+                <dependencyConvergence></dependencyConvergence>
+                <reactorModuleConvergence></reactorModuleConvergence>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -175,20 +344,10 @@
       </plugin>
 
       <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-      </plugin>
-
-      <plugin>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.6.0</version>
-        <configuration>
-          <goalPrefix>license</goalPrefix>
-          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-        </configuration>
         <executions>
           <execution>
-            <id>mojo-descriptor</id>
+            <id>default-descriptor</id>
             <goals>
               <goal>descriptor</goal>
             </goals>
@@ -203,9 +362,17 @@
       </plugin>
 
       <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.9.1</version>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.13</version>
+        <extensions>true</extensions>
+        <configuration>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <serverId>ossrh</serverId>
+        </configuration>
       </plugin>
+
     </plugins>
   </build>
 
@@ -214,12 +381,10 @@
 
       <plugin>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.6.0</version>
       </plugin>
 
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.1.1</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -241,6 +406,7 @@
   </reporting>
 
   <profiles>
+
     <!-- publish site to github,
     1. mvn [clean install] site
     2. mvn -P gh-pages pre-site
@@ -253,15 +419,6 @@
           <plugin>
             <groupId>com.github.github</groupId>
             <artifactId>site-maven-plugin</artifactId>
-            <version>0.12</version>
-            <configuration>
-              <message>Site documentation</message>
-              <path>${project.version}</path>
-              <merge>true</merge>
-              <server>github</server>
-              <repositoryName>license-maven-plugin</repositoryName>
-              <repositoryOwner>chonton</repositoryOwner>
-            </configuration>
             <executions>
               <execution>
                 <goals>
@@ -285,7 +442,6 @@
 
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -299,7 +455,6 @@
 
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.2.0</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -312,7 +467,6 @@
 
           <plugin>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.2.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -326,13 +480,6 @@
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.8</version>
-            <extensions>true</extensions>
-            <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
           </plugin>
 
         </plugins>
