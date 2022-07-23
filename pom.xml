@@ -15,8 +15,8 @@
 
   <licenses>
     <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <name>Apache-2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -53,7 +53,7 @@
 
     <site>
       <id>github</id>
-      <url>https://chonton.github.com/${project.artifactId}/${project.version}</url>
+      <url>scm:git:ssh://git@github.com/chonton/${project.artifactId}.git</url>
     </site>
 
   </distributionManagement>
@@ -65,7 +65,7 @@
 
     <!-- use org.sonatype.plugins:nexus-staging-maven-plugin instead of org.apache.maven.plugins:maven-deploy-plugin -->
     <maven.deploy.skip>true</maven.deploy.skip>
-    <!-- use com.github.github:site-maven-plugin instead of org.apache.maven.plugins:maven-site-plugin -->
+    <!-- use org.apache.maven.plugins:maven-scm-publish-plugin instead of org.apache.maven.plugins:maven-site-plugin -->
     <maven.site.deploy.skip>true</maven.site.deploy.skip>
     <maven.version>3.5.4</maven.version>
 
@@ -179,19 +179,6 @@
       <plugins>
 
         <plugin>
-          <groupId>com.github.github</groupId>
-          <artifactId>site-maven-plugin</artifactId>
-          <version>0.12</version>
-          <configuration>
-            <message>Site documentation</message>
-            <path>${project.version}</path>
-            <repositoryName>${project.version}</repositoryName>
-            <repositoryOwner>chonton</repositoryOwner>
-            <server>github</server>
-          </configuration>
-        </plugin>
-
-        <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
@@ -233,12 +220,12 @@
 
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.4.0</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.6.2</version>
+          <version>3.6.4</version>
           <configuration>
             <extractors>
               <extractor>java-annotations</extractor>
@@ -249,12 +236,17 @@
 
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.3.0</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.2.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-scm-publish-plugin</artifactId>
+          <version>3.1.0</version>
         </plugin>
 
         <plugin>
@@ -276,6 +268,12 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>1.6.13</version>
         </plugin>
 
       </plugins>
@@ -361,6 +359,26 @@
         </executions>
       </plugin>
 
+      <!-- publish site to github,
+      1. mvn [clean install] site-deploy
+      -->
+      <plugin>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <configuration>
+          <content>target/site</content>
+          <scmBranch>gh-pages</scmBranch>
+          <tryUpdate>true</tryUpdate>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>publish-scm</goal>
+            </goals>
+            <phase>site-deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -402,35 +420,11 @@
           </reportSet>
         </reportSets>
       </plugin>
+
     </plugins>
   </reporting>
 
   <profiles>
-
-    <!-- publish site to github,
-    1. mvn [clean install] site
-    2. mvn -P gh-pages pre-site
-    -->
-    <profile>
-      <id>gh-pages</id>
-      <build>
-        <plugins>
-          <!-- push stage to github gh-pages -->
-          <plugin>
-            <groupId>com.github.github</groupId>
-            <artifactId>site-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>site</goal>
-                </goals>
-                <phase>pre-site</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
 
     <!-- release to maven central
     mvn clean deploy -P release

@@ -13,9 +13,9 @@ licences.  Additionally, OSI publishes a [FAQ](https://opensource.org/faq) on wh
 and how it is licensed.
 
 # Plugin
-Plugin reports available at [plugin info](https://chonton.github.io/license-maven-plugin/0.0.2/plugin-info.html).
+Plugin reports available at [plugin info](https://chonton.github.io/license-maven-plugin/plugin-info.html).
 
-There is a single goal: [compliance](https://chonton.github.io/license-maven-plugin/0.0.2/compliance-mojo.html),
+There is a single goal: [compliance](https://chonton.github.io/license-maven-plugin/compliance-mojo.html),
 which binds by default to the *validate* phase.  This goal checks all dependencies in the build and
 active profile sections for compliance with acceptable licenses.  
 
