@@ -4,7 +4,7 @@
 
   <groupId>org.honton.chas</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.0.3</version>
   <packaging>maven-plugin</packaging>
 
   <name>License Compliance Maven Plugin</name>
@@ -16,7 +16,7 @@
   <licenses>
     <license>
       <name>Apache-2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -59,6 +59,8 @@
   </distributionManagement>
 
   <properties>
+    <git-code-format-maven-plugin.version>4.2</git-code-format-maven-plugin.version>
+
     <maven.compiler.release>11</maven.compiler.release>
     <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
     <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
@@ -78,15 +80,39 @@
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-annotations</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.1</version>
       </dependency>
 
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>3.4.1</version>
+        <version>4.0.0</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-core</artifactId>
+        <version>4.0.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>4.0.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>4.0.0</version>
+      </dependency>
+
+      <!-- convergence between com.sun.xml.bind:jaxb-core:4.0.2 and jakarta.xml.bind:jakarta.xml.bind-api:4.0.0-->
+      <dependency>
+        <groupId>jakarta.activation</groupId>
+        <artifactId>jakarta.activation-api</artifactId>
+        <version>2.1.1</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -95,27 +121,24 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-core</artifactId>
-      <version>2.3.0.1</version>
       <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
-      <version>2.3.1</version>
       <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
-      <version>2.3.3</version>
     </dependency>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.9.3</version>
       <scope>test</scope>
     </dependency>
 
@@ -131,12 +154,6 @@
       <artifactId>maven-core</artifactId>
       <version>${maven.version}</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-sec-dispatcher</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -156,7 +173,7 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.6.4</version>
+      <version>3.9.0</version>
     </dependency>
 
     <dependency>
@@ -168,7 +185,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.6.0</version>
+      <version>5.3.1</version>
       <scope>test</scope>
     </dependency>
 
@@ -179,74 +196,86 @@
       <plugins>
 
         <plugin>
+          <groupId>com.cosium.code</groupId>
+          <artifactId>git-code-format-maven-plugin</artifactId>
+          <version>${git-code-format-maven-plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.cosium.code</groupId>
+              <artifactId>google-java-format</artifactId>
+              <version>${git-code-format-maven-plugin.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.2.0</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
+          <version>3.11.0</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.6.0</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.0.0-M1</version>
+          <version>3.1.1</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.1.0</version>
-        </plugin>
-
-        <plugin>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.0.1</version>
-        </plugin>
-
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>3.0.0-M1</version>
-        </plugin>
-
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-
-        <plugin>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.4.0</version>
-        </plugin>
-
-        <plugin>
-          <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.6.4</version>
-          <configuration>
-            <extractors>
-              <extractor>java-annotations</extractor>
-            </extractors>
-            <goalPrefix>license</goalPrefix>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.3.0</version>
         </plugin>
 
         <plugin>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.1.1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>3.5.1</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.5.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>3.9.0</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>3.4.3</version>
+        </plugin>
+
+        <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.3.1</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-scm-publish-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.2.1</version>
         </plugin>
 
         <plugin>
@@ -256,24 +285,12 @@
 
         <plugin>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>3.3.0</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M5</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>1.6.13</version>
+          <version>3.1.0</version>
         </plugin>
 
       </plugins>
@@ -283,17 +300,15 @@
     <plugins>
 
       <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <configuration>
-          <failOnWarning>true</failOnWarning>
-          <ignoreNonCompile>true</ignoreNonCompile>
-        </configuration>
+        <groupId>com.cosium.code</groupId>
+        <artifactId>git-code-format-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>check-dependencies</id>
+            <id>format-code</id>
             <goals>
-              <goal>analyze-only</goal>
+              <goal>format-code</goal>
             </goals>
+            <phase>validate</phase>
           </execution>
         </executions>
       </plugin>
@@ -324,7 +339,6 @@
 
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
-        <version>3.2.1</version>
         <configuration>
           <postBuildHookScript>verify</postBuildHookScript>
           <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
@@ -343,9 +357,15 @@
 
       <plugin>
         <artifactId>maven-plugin-plugin</artifactId>
+        <configuration>
+          <extractors>
+            <extractor>java-annotations</extractor>
+          </extractors>
+          <goalPrefix>license</goalPrefix>
+        </configuration>
         <executions>
           <execution>
-            <id>default-descriptor</id>
+            <id>mojo-descriptor</id>
             <goals>
               <goal>descriptor</goal>
             </goals>
@@ -379,18 +399,6 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.13</version>
-        <extensions>true</extensions>
-        <configuration>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <serverId>ossrh</serverId>
-        </configuration>
-      </plugin>
-
     </plugins>
   </build>
 
@@ -403,6 +411,7 @@
 
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.4.4</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -425,7 +434,6 @@
   </reporting>
 
   <profiles>
-
     <!-- release to maven central
     mvn clean deploy -P release
     -->
@@ -474,6 +482,13 @@
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.13</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
           </plugin>
 
         </plugins>

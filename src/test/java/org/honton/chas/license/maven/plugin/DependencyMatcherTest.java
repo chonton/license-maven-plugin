@@ -1,19 +1,17 @@
 package org.honton.chas.license.maven.plugin;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-/**
- *
- */
-public class DependencyMatcherTest {
+/** */
+class DependencyMatcherTest {
 
   static Dependency createDependency(String... gact) {
     Dependency d = new Dependency();
@@ -32,78 +30,88 @@ public class DependencyMatcherTest {
   }
 
   @Test
-  public void testNullGlobs() throws MojoExecutionException {
+  void testNullGlobs() throws MojoExecutionException {
     Log log = Mockito.mock(Log.class);
-    DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Collections.<String>emptyList());
+    DependencyMatcher dependencyMatcher =
+        new DependencyMatcher(log, Collections.<String>emptyList());
     Dependency dependency = createDependency("groupId", "artifactId");
-    Assert.assertFalse(dependencyMatcher.isMatch(dependency));
+    Assertions.assertFalse(dependencyMatcher.isMatch(dependency));
   }
 
   @Test
-  public void testEmptyGlobs() throws MojoExecutionException {
+  void testEmptyGlobs() throws MojoExecutionException {
     Log log = Mockito.mock(Log.class);
     DependencyMatcher dependencyMatcher = new DependencyMatcher(log, null);
     Dependency dependency = createDependency("groupId", "artifactId");
-    Assert.assertFalse(dependencyMatcher.isMatch(dependency));
-  }
-
-  @Test(expected = MojoExecutionException.class)
-  public void testGlobWithNoColon() throws MojoExecutionException {
-    Log log = Mockito.mock(Log.class);
-    new DependencyMatcher(log, Collections.singletonList("groupId"));
-  }
-
-  @Test(expected = MojoExecutionException.class)
-  public void testGlobWithFourColon() throws MojoExecutionException {
-    Log log = Mockito.mock(Log.class);
-    new DependencyMatcher(log, Collections.singletonList("g:a:c:t:x"));
+    Assertions.assertFalse(dependencyMatcher.isMatch(dependency));
   }
 
   @Test
-  public void testGroupIdArtifactId() throws MojoExecutionException {
+  void testGlobWithNoColon() {
     Log log = Mockito.mock(Log.class);
-    DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Collections.singletonList("groupId:artifactId"));
+    List<String> groupId = List.of("groupId");
+    Assertions.assertThrows(
+        MojoExecutionException.class, () -> new DependencyMatcher(log, groupId));
+  }
+
+  @Test
+  void testGlobWithFourColon() {
+    Log log = Mockito.mock(Log.class);
+    List<String> globs = List.of("g:a:c:t:x");
+    Assertions.assertThrows(MojoExecutionException.class, () -> new DependencyMatcher(log, globs));
+  }
+
+  @Test
+  void testGroupIdArtifactId() throws MojoExecutionException {
+    Log log = Mockito.mock(Log.class);
+    DependencyMatcher dependencyMatcher =
+        new DependencyMatcher(log, Collections.singletonList("groupId:artifactId"));
     Dependency dependency = createDependency("groupId", "artifactId");
-    Assert.assertTrue(dependencyMatcher.isMatch(dependency));
+    Assertions.assertTrue(dependencyMatcher.isMatch(dependency));
   }
 
   @Test
-  public void testGroupIdArtifactIdClassifier() throws MojoExecutionException {
+  void testGroupIdArtifactIdClassifier() throws MojoExecutionException {
     Log log = Mockito.mock(Log.class);
-    DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Collections.singletonList("groupId:artifactId:classifier"));
+    DependencyMatcher dependencyMatcher =
+        new DependencyMatcher(log, Collections.singletonList("groupId:artifactId:classifier"));
     Dependency dependency = createDependency("groupId", "artifactId", "classifier");
-    Assert.assertTrue(dependencyMatcher.isMatch(dependency));
+    Assertions.assertTrue(dependencyMatcher.isMatch(dependency));
   }
 
   @Test
-  public void testGroupIdArtifactIdTypeClassifier() throws MojoExecutionException {
+  void testGroupIdArtifactIdTypeClassifier() throws MojoExecutionException {
     Log log = Mockito.mock(Log.class);
-    DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Collections.singletonList("groupId:artifactId:type:classifier"));
+    DependencyMatcher dependencyMatcher =
+        new DependencyMatcher(log, Collections.singletonList("groupId:artifactId:type:classifier"));
     Dependency dependency = createDependency("groupId", "artifactId", "classifier", "type");
-    Assert.assertTrue(dependencyMatcher.isMatch(dependency));
+    Assertions.assertTrue(dependencyMatcher.isMatch(dependency));
   }
 
   @Test
-  public void testMatchSecond() throws MojoExecutionException {
+  void testMatchSecond() throws MojoExecutionException {
     Log log = Mockito.mock(Log.class);
-    DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Arrays.asList("g:a", "groupId:artifactId"));
+    DependencyMatcher dependencyMatcher =
+        new DependencyMatcher(log, Arrays.asList("g:a", "groupId:artifactId"));
     Dependency dependency = createDependency("groupId", "artifactId");
-    Assert.assertTrue(dependencyMatcher.isMatch(dependency));
+    Assertions.assertTrue(dependencyMatcher.isMatch(dependency));
   }
 
   @Test
-  public void testNoMatch() throws MojoExecutionException {
+  void testNoMatch() throws MojoExecutionException {
     Log log = Mockito.mock(Log.class);
-    DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Collections.singletonList("groupId:artifactId"));
+    DependencyMatcher dependencyMatcher =
+        new DependencyMatcher(log, Collections.singletonList("groupId:artifactId"));
     Dependency dependency = createDependency("g", "a");
-    Assert.assertFalse(dependencyMatcher.isMatch(dependency));
+    Assertions.assertFalse(dependencyMatcher.isMatch(dependency));
   }
 
   @Test
-  public void testWildPrefix() throws MojoExecutionException {
+  void testWildPrefix() throws MojoExecutionException {
     Log log = Mockito.mock(Log.class);
-    DependencyMatcher dependencyMatcher = new DependencyMatcher(log, Collections.singletonList("com\\.example\\.*:*"));
+    DependencyMatcher dependencyMatcher =
+        new DependencyMatcher(log, Collections.singletonList("com\\.example\\.*:*"));
     Dependency dependency = createDependency("com.example.group", "artifact-lib");
-    Assert.assertTrue(dependencyMatcher.isMatch(dependency));
+    Assertions.assertTrue(dependencyMatcher.isMatch(dependency));
   }
 }

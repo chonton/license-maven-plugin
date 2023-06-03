@@ -1,18 +1,14 @@
 package org.honton.chas.license.maven.plugin;
 
-import org.apache.maven.model.Dependency;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.logging.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 
-
-/**
- * Does an artifact match a list of globs
- */
+/** Does an artifact match a list of globs */
 public class DependencyMatcher {
 
   private final Log logger;
@@ -59,7 +55,8 @@ public class DependencyMatcher {
   private static Pattern createPattern(String glob) throws MojoExecutionException {
     Matcher matcher = GATC.matcher(glob);
     if (!matcher.matches()) {
-      throw new MojoExecutionException(glob + " does not match groupId:artifactId[[:type]:classifier]");
+      throw new MojoExecutionException(
+          glob + " does not match groupId:artifactId[[:type]:classifier]");
     }
     StringBuilder sb = new StringBuilder(128);
     globToRegex(sb, matcher.group(1));
@@ -105,9 +102,11 @@ public class DependencyMatcher {
   private String gatc(Dependency dependency) {
     StringBuilder sb = new StringBuilder(128);
     sb.append(dependency.getGroupId())
-      .append(':').append(dependency.getArtifactId())
-      .append(':').append(dependency.getType())
-      .append(':');
+        .append(':')
+        .append(dependency.getArtifactId())
+        .append(':')
+        .append(dependency.getType())
+        .append(':');
 
     String classifier = dependency.getClassifier();
     if (classifier != null && !classifier.isEmpty()) {
