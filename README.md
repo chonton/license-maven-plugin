@@ -34,17 +34,22 @@ The compliance check can be excluded for dependencies matching specified
 organizational internal dependencies that may not have an attached license.
 
 ## Configuration
-| Parameter                  | Property               | Default                          | Description                                                                                                                                                                                                         |
-|----------------------------|------------------------|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| skipCompliance             | ${compliance.skip}     | false                            | Skip the license check                                                                                                                                                                                              |
-| acceptableLicenses         |                        |                                  | The set of license regular expressions to match against dependency licenses.  If any license is specified, the default acceptableLicenseResources will not be used.                                                 |
-| acceptableLicenseResources | ${compliance.licenses} | osi-permissive                   | The comma separated names of xml resources from which to read licenses.  Built in resources are 'osi-widely-used' and 'osi-permissive'.  Default is used only if no acceptableLicenses are specified.               |
-| excludes                   |                        |                                  | The list of dependencies to exclude from checking compliance.  These will be in the form of *groupId:artifactId[[:type]:classifier]*. Wildcard characters '*' and '?' can be used to do glob-like pattern matching. |
-| scopes                     | ${compliance.scopes}   | compile, runtime, provided, test | The comma separated list of scopes to check                                                                                                                                                                         |
+| Parameter                  | Property               | Default                          | Description                                                                                                                                                                                                    |
+|----------------------------|------------------------|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| skipCompliance             | ${compliance.skip}     | false                            | Skip the license check                                                                                                                                                                                         |
+| acceptableLicenses         |                        |                                  | The set of license regular expressions to match against dependency licenses.  If any license is specified, the default acceptableLicenseResources will not be used.                                            |
+| acceptableLicenseResources | ${compliance.licenses} | osi-permissive                   | The comma separated names of xml resources from which to read licenses.  Built in resources are 'osi-widely-used' and 'osi-permissive'.  Default is used only if no acceptableLicenses are specified.          |
+| acceptableLicenseResourcesFilesPaths | ${compliance.licenses.filesPaths} | /tmp/licenses.xml                | The comma separated file paths of xml resources from which to read licenses.          |
+| excludes                   | ${compliance.excludes} |                                  | The list of dependencies to exclude from checking compliance.  These will be in the form of *groupId:artifactId[[:type]:classifier]*. Wildcard characters '*' and '?' can be used to do glob-like pattern matching. |
+| scopes                     | ${compliance.scopes}   | compile, runtime, provided, test | The comma separated list of scopes to check                                                                                                                                                                    |
 
 # Examples
 
 ## Typical Use
+
+Command line :
+mvn org.honton.chas:license-maven-plugin:0.0.4:compliance "-Dcompliance.excludes=org.test:*,com.test:*" "-Dcompliance.licenses.filesPaths=/tmp/licences-custom.xml"
+
 ```xml
   <build>
     <pluginManagement>
@@ -52,7 +57,7 @@ organizational internal dependencies that may not have an attached license.
           <plugin>
             <groupId>org.honton.chas</groupId>
             <artifactId>license-maven-plugin</artifactId>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
           </plugin>
         </plugins>
     </pluginManagement>

@@ -59,12 +59,17 @@ public class ComplianceMojo extends AbstractMojo {
   @Parameter(property = "compliance.licenses")
   private String acceptableLicenseResources;
 
+  /** Paths to files containing resources with licenses that are allowed */
+  @Parameter(property = "compliance.licenses.filesPaths")
+  private List<String> acceptableLicenseResourcesFilesPaths;
+
   /**
    * The dependencies to exclude from checking compliance. These will be in the form of
    * <em></em>groupId:artifactId[[:type]:classifier]</em>. Wildcard characters '*' and '?' can be
    * used to do glob-like pattern matching.
    */
-  @Parameter private List<String> excludes;
+  @Parameter(property = "compliance.excludes")
+  private List<String> excludes;
 
   /** The dependency scopes to check. */
   @Parameter(property = "compliance.scopes", defaultValue = "compile, runtime, provided, test")
@@ -90,6 +95,9 @@ public class ComplianceMojo extends AbstractMojo {
     }
     if (acceptableLicenseResources != null) {
       LicenseSet.loadLicenses(acceptableLicenses, acceptableLicenseResources);
+    }
+    if (acceptableLicenseResourcesFilesPaths != null) {
+      LicenseSet.loadLicensesFromFile(acceptableLicenses, acceptableLicenseResourcesFilesPaths);
     }
 
     excludeMatcher = new DependencyMatcher(getLog(), excludes);
