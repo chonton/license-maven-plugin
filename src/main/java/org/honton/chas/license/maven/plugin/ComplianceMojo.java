@@ -17,7 +17,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuilder;
 import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.repository.RepositorySystem;
-import org.apache.maven.shared.artifact.resolve.ArtifactResolver;
+import org.apache.maven.shared.transfer.artifact.resolve.ArtifactResolver;
 import org.honton.chas.license.maven.plugin.compliance.LicenseMatcher;
 import org.honton.chas.license.maven.plugin.compliance.LicenseRegex;
 import org.honton.chas.license.maven.plugin.compliance.LicenseSet;

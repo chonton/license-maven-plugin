@@ -50,6 +50,7 @@ public class DependencyMatcher {
   }
 
   private static final Pattern GATC = Pattern.compile("^([^:]+):([^:]+)((:([^:]+))?:([^:]+))?$");
+
   // groupId:artifactId[[:type]:classifier]
 
   private static Pattern createPattern(String glob) throws MojoExecutionException {
