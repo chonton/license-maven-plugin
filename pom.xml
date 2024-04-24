@@ -331,8 +331,8 @@
                 <requireMavenVersion>
                   <version>[${maven.version},)</version>
                 </requireMavenVersion>
-                <dependencyConvergence></dependencyConvergence>
-                <reactorModuleConvergence></reactorModuleConvergence>
+                <dependencyConvergence/>
+                <reactorModuleConvergence/>
               </rules>
             </configuration>
           </execution>
