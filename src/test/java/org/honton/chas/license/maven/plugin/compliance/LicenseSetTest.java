@@ -1,6 +1,7 @@
 package org.honton.chas.license.maven.plugin.compliance;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.maven.model.License;
@@ -17,6 +18,22 @@ class LicenseSetTest {
   void loadLicenses() throws MojoExecutionException {
     List<LicenseRegex> licenses = new ArrayList<>();
     LicenseSet.loadLicenses(licenses, "osi-widely-used");
+    LicenseRegex apache = licenses.get(0);
+    Assertions.assertEquals(
+        "((The\\s+)?Apache\\s+(Software\\s+)?License\\s*(,\\s*Version\\s+)?2\\.0)"
+            + "|(Apache-2\\.0)",
+        apache.getName());
+    Assertions.assertEquals(
+        "(https?://www\\.apache\\.org/licenses/LICENSE-2\\.0(\\.txt)?)"
+            + "|(https?://opensource\\.org/licenses/Apache-2\\.0)",
+        apache.getUrl());
+  }
+
+  @Test
+  void loadLicensesFromFile() throws MojoExecutionException {
+    List<LicenseRegex> licenses = new ArrayList<>();
+    LicenseSet.loadLicensesFromFile(
+        licenses, Arrays.asList("src/main/resources/osi-permissive.xml"));
     LicenseRegex apache = licenses.get(0);
     Assertions.assertEquals(
         "((The\\s+)?Apache\\s+(Software\\s+)?License\\s*(,\\s*Version\\s+)?2\\.0)"
