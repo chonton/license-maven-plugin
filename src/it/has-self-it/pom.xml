@@ -11,14 +11,24 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>direct-license-it</artifactId>
+  <artifactId>has-self-it</artifactId>
 
-  <dependencies>
-    <!-- org.honton.chas.datadog:dogstatd-client directly specifies apache -->
-    <dependency>
-      <groupId>org.honton.chas</groupId>
-      <artifactId>dogstatd-client</artifactId>
-      <version>0.0.3</version>
-    </dependency>
-  </dependencies>
+  <licenses>
+    <license>
+      <name>Apache-2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.honton.chas</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <artifact>true</artifact>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

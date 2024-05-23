@@ -75,9 +75,31 @@ public class ComplianceMojo extends AbstractMojo {
   @Parameter(property = "compliance.scopes", defaultValue = "compile, runtime, provided, test")
   private String scopes;
 
+  /** Check main artifact */
+  @Parameter(property = "compliance.artifact", defaultValue = "false")
+  private boolean artifact;
+
   private DependencyMatcher excludeMatcher;
   private LicenseMatcher licenseMatcher;
   private ScopeMatcher scopeMatcher;
+
+  // groupId:artifactId:packaging:classifier:version
+  private static StringBuilder createMessage(StringBuilder sb, Dependency d) {
+    sb.append(d.getGroupId())
+        .append(':')
+        .append(d.getArtifactId())
+        .append(':')
+        .append(d.getType() != null ? d.getType() : "jar");
+    if (d.getClassifier() != null) {
+      sb.append(':').append(d.getClassifier());
+    }
+    sb.append(':').append(d.getVersion());
+    return sb;
+  }
+
+  private static String createMessage(Dependency d, String suffix) {
+    return createMessage(new StringBuilder(100), d).append(suffix).toString();
+  }
 
   public void execute() throws MojoExecutionException, MojoFailureException {
     if (skipCompliance) {
@@ -106,6 +128,16 @@ public class ComplianceMojo extends AbstractMojo {
     for (Dependency dependency : project.getDependencies()) {
       checkDependency(dependency);
     }
+
+    if (artifact) {
+      Dependency dependency = new Dependency();
+      dependency.setGroupId(project.getGroupId());
+      dependency.setArtifactId(project.getArtifactId());
+      dependency.setVersion(project.getVersion());
+      dependency.setScope("compile");
+      dependency.setType(project.getPackaging());
+      checkProject(dependency, project);
+    }
   }
 
   private void checkDependency(Dependency dependency) throws MojoExecutionException {
@@ -117,7 +149,11 @@ public class ComplianceMojo extends AbstractMojo {
       getLog().debug(createMessage(dependency, " is excluded"));
       return;
     }
-    MavenProject mavenProject = getMavenProject(dependency);
+    checkProject(dependency, getMavenProject(dependency));
+  }
+
+  private void checkProject(Dependency dependency, MavenProject mavenProject)
+      throws MojoExecutionException {
     List<License> licenses = mavenProject.getLicenses();
     if (!licenseMatcher.hasAcceptableLicense(licenses)) {
       StringBuilder sb = createMessage(new StringBuilder(300), dependency);
@@ -160,27 +196,5 @@ public class ComplianceMojo extends AbstractMojo {
     } catch (ProjectBuildingException e) {
       throw new MojoExecutionException(e.getMessage(), e);
     }
-  }
-
-  // groupId:artifactId:packaging:classifier:version
-  private static StringBuilder createMessage(StringBuilder sb, Dependency d) {
-    sb.append(d.getGroupId())
-        .append(':')
-        .append(d.getArtifactId())
-        .append(':')
-        .append(d.getType() != null ? d.getType() : "jar");
-    if (d.getClassifier() != null) {
-      sb.append(':').append(d.getClassifier());
-    }
-    sb.append(':').append(d.getVersion());
-    return sb;
-  }
-
-  private static String createMessage(Dependency d, String suffix) {
-    return createMessage(new StringBuilder(100), d).append(suffix).toString();
-  }
-
-  private static String createMessage(String prefix, Dependency d) {
-    return createMessage(new StringBuilder(100).append(prefix), d).toString();
   }
 }

@@ -4,7 +4,7 @@
 
   <groupId>org.honton.chas</groupId>
   <artifactId>license-maven-plugin</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
   <packaging>maven-plugin</packaging>
 
   <name>License Compliance Maven Plugin</name>
@@ -79,18 +79,6 @@
     <dependencies>
 
       <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-annotations</artifactId>
-        <version>2.2.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-utils</artifactId>
-        <version>4.0.1</version>
-      </dependency>
-
-      <dependency>
         <groupId>com.sun.xml.bind</groupId>
         <artifactId>jaxb-core</artifactId>
         <version>4.0.5</version>
@@ -102,17 +90,29 @@
         <version>4.0.5</version>
       </dependency>
 
+      <!-- convergence between com.sun.xml.bind:jaxb-core:4.0.2 and jakarta.xml.bind:jakarta.xml.bind-api:4.0.0-->
+      <dependency>
+        <groupId>jakarta.activation</groupId>
+        <artifactId>jakarta.activation-api</artifactId>
+        <version>2.1.1</version>
+      </dependency>
+
       <dependency>
         <groupId>jakarta.xml.bind</groupId>
         <artifactId>jakarta.xml.bind-api</artifactId>
         <version>4.0.2</version>
       </dependency>
 
-      <!-- convergence between com.sun.xml.bind:jaxb-core:4.0.2 and jakarta.xml.bind:jakarta.xml.bind-api:4.0.0-->
       <dependency>
-        <groupId>jakarta.activation</groupId>
-        <artifactId>jakarta.activation-api</artifactId>
-        <version>2.1.1</version>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-annotations</artifactId>
+        <version>2.2.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>4.0.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -134,13 +134,6 @@
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>5.9.3</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -182,6 +175,13 @@
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-artifact-transfer</artifactId>
       <version>0.13.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.9.3</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -331,8 +331,8 @@
                 <requireMavenVersion>
                   <version>[${maven.version},)</version>
                 </requireMavenVersion>
-                <dependencyConvergence></dependencyConvergence>
-                <reactorModuleConvergence></reactorModuleConvergence>
+                <dependencyConvergence/>
+                <reactorModuleConvergence/>
               </rules>
             </configuration>
           </execution>
