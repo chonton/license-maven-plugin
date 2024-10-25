@@ -26,6 +26,9 @@ public class ScopeMatcher {
    * @return true, if the artifact matches
    */
   public boolean isMatch(String scope) {
+    if (scope == null) {
+      return false;
+    }
     return 0 <= Arrays.binarySearch(scopes, scope);
   }
 }
