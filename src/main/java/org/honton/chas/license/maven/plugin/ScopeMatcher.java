@@ -16,16 +16,23 @@ public class ScopeMatcher {
    * @param scopes The comma separated list of scopes
    */
   public ScopeMatcher(String scopes) {
-    this.scopes = COMMA_SEPARATED_LIST.split(scopes);
-    Arrays.sort(this.scopes);
+    this.scopes = scopes != null ? sortedScopes(scopes) : null;
+  }
+
+  private static String[] sortedScopes(String scopeSpec) {
+    String[] scopes = COMMA_SEPARATED_LIST.split(scopeSpec);
+    Arrays.sort(scopes);
+    return scopes;
   }
 
   /**
-   * Does the given artifact match one of the globs?
+   * Does the given artifact match one of desired scopes?
    *
    * @return true, if the artifact matches
    */
   public boolean isMatch(String scope) {
-    return 0 <= Arrays.binarySearch(scopes, scope);
+    return scopes == null
+        || scope == null // some artifacts are pushed to maven central without scope
+        || 0 <= Arrays.binarySearch(scopes, scope);
   }
 }

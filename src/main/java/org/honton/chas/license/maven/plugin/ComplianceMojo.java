@@ -107,7 +107,7 @@ public class ComplianceMojo extends AbstractMojo {
       return;
     }
 
-    scopeMatcher = new ScopeMatcher(scopes != null ? scopes : "compile, runtime, provided, test");
+    scopeMatcher = new ScopeMatcher(scopes);
 
     if (acceptableLicenses == null) {
       acceptableLicenses = new ArrayList<>();
@@ -142,7 +142,7 @@ public class ComplianceMojo extends AbstractMojo {
 
   private void checkDependency(Dependency dependency) throws MojoExecutionException {
     if (!scopeMatcher.isMatch(dependency.getScope())) {
-      getLog().debug(createMessage(dependency, " is not scoped"));
+      getLog().debug(createMessage(dependency, " is not in scope"));
       return;
     }
     if (excludeMatcher.isMatch(dependency)) {

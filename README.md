@@ -42,7 +42,7 @@ organizational internal dependencies that may not have an attached license.
 | acceptableLicenseResourcesFilesPaths | ${compliance.licenses.filesPaths} | /tmp/licenses.xml                | The comma separated file paths of xml resources from which to read licenses                                                                                                                                         |
 | artifact                             | ${compliance.artifact}            | false                            | Check that main artifact has acceptable license                                                                                                                                                                     |
 | excludes                             | ${compliance.excludes}            |                                  | The list of dependencies to exclude from checking compliance.  These will be in the form of *groupId:artifactId[[:type]:classifier]*. Wildcard characters '*' and '?' can be used to do glob-like pattern matching. |
-| scopes                               | ${compliance.scopes}              | compile, runtime, provided, test | The comma separated list of scopes to check                                                                                                                                                                         |
+| scopes                               | ${compliance.scopes}              | compile, runtime, provided, test | The comma separated list of scopes to check. If artifact does not declare scope, it will match any scope.                                                                                                           |
 
 # Examples
 
